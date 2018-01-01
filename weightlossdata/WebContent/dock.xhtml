@@ -45,18 +45,18 @@
 
             Chat.socket.onmessage = function (message) {
             	Chat.socket.close();
-                document.location.href = '/weightlossdata/'+message.data;
+                document.location.href = '/wld/'+message.data;
             };
         });
 
         Chat.initialize = function() {
         	var query = window.location.search.substring(1);
             if (window.location.protocol == 'http:') {
-                Chat.connect('ws://' + window.location.host + '//games/dock?'+query);
-                console.log("'ws://' + window.location.host + '/weightlossdata/games/dock?'+query");
+                Chat.connect('ws://' + window.location.host + '/wld/games/dock?'+query);
+                console.log("'ws://' + window.location.host + '/wld/games/dock?'+query");
             } else {
-                Chat.connect('wss://' + window.location.host + '/weightlossdata/games/dock?'+query);
-                console.log("'wss://' + window.location.host + '/weightlossdata/games/dock?'+query");
+                Chat.connect('wss://' + window.location.host + '/wld/games/dock?'+query);
+                console.log("'wss://' + window.location.host + '/wld/games/dock?'+query");
             }
         };
 
