@@ -1,3 +1,10 @@
 # Add any directories, files, or patterns you don't want to be tracked by version control
 *.classpath
 *.class
+*.xml
+*.container
+*.name
+*.MF
+*.project
+*.component
+*.jsdtscope
