@@ -27,12 +27,11 @@ public class SimpleCheckUserId extends HttpServlet {
 		PrintWriter out = response.getWriter();
 		String stringFromJconnector = Jconnector.checkSimpleUserId(unameFromLoginForm);
 		int stringToInt = Integer.parseInt(stringFromJconnector);
-		System.out.println("This should be 0 or 1: "+stringFromJconnector);
+//		System.out.println("This should be 0 or 1: "+stringFromJconnector);
 		//out.println(unameFromLoginForm);
 		
-		//The below output(1 or 0) is sent to the loginform.html
+		//The below output(1 or 0) is sent to the LoginForm.html
 		if (stringToInt == 0){
-			//do something
 			out.println(0);
 		}
 		else{
