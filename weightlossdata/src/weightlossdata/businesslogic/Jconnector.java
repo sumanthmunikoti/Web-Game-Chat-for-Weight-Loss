@@ -131,6 +131,55 @@ public class Jconnector {
 		return "obligation";
 	}
 
+	//-------------------------------------------------------------------------------------------------------
+	
+		public static void insertSimpleUserInformation(String userid) {
+			
+			String url = "jdbc:mysql://localhost:3306/aml";
+			String user = "hsr";
+			String password = "root";
 
+			try {
+				Class.forName("com.mysql.jdbc.Driver");
+				// dynamically load the driver's class file into memory, which
+				// automatically registers it
+				Connection conn = DriverManager.getConnection(url, user, password);
+				// call to the DriverManager object's getConnection( ) method to
+				// establish actual database connection.
+
+				String querySetLimit = "SET GLOBAL max_allowed_packet=104857600;"; // 10
+
+				Statement stSetLimit = conn.createStatement();
+				// You need a Connection object to create a Statement object
+				// Use the createStatement() method to create the statement object
+				// stSetLimit holds the reference to this object
+
+				stSetLimit.execute(querySetLimit);
+				// execute anything that comes in.....
+
+				String sql = "INSERT INTO wld.useraccount (`userid`) VALUES (?)";
+
+				PreparedStatement statement = conn.prepareStatement(sql);
+				// The PreparedStatement interface accepts input parameters at
+				// runtime.
+				
+				statement.setString(1, userid);
+
+				// firstName, lastName,....etc are variables from the welcome.html
+				// page
+
+				int row = statement.executeUpdate();
+
+				if (row > 0) {
+					System.out.println("A row was inserted (insertUserInformation worked. Yaay !!!).");
+				} // end if
+				conn.close();
+			} // end try
+			catch (Exception ex) {
+				ex.printStackTrace();
+			} // end catch
+		}// end insertUserInformation
+
+		// ------------------------------------------------------------
 
 }

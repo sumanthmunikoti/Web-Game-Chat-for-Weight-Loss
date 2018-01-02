@@ -102,10 +102,39 @@
 
 //-----------------------------------------------------------------------
 	function loadData() {
+	
+		var userid = document.getElementById('username').value;
+		var mystr = "{'userid':'" + userid + "'}";
 
+		window.location.href = "LoginForm.html";
+
+		$.ajax({
+			url : "SimpleAccountView",
+			type : 'POST',
+			contentType : 'application/json',
+			data : mystr,
+			dataType : 'text',
+			
+			success : function(data) {
+				console.log("Communication succesful");	
+				console.log(mystr);
+				console.log(data);
+			},
+			error : function(xhr, ajaxOptions, thrownError) {
+				//On error do this
+				if (xhr.status == 200) {
+					console.log("Failed");
+					//alert(ajaxOptions);
+				} else {
+					//alert(xhr.status);
+				}
+			}
+		});
+
+	
 			$.ajax({
-				url : "TestServlet1",
-				type : 'GET',
+				url : "SessionServlet",
+				type : 'POST',
 				dataType : 'text',
 				
 				success: function(data){

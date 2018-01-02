@@ -103,34 +103,9 @@ span.pass {
 	}
 
 	function loadOptionsPage() {
-
+		
 		var uname = document.getElementById('uname').value;
-		
 
-		$.ajax({
-			url : "WebGameServlet",
-			type : 'POST',
-			contentType : 'text',
-			data : uname,
-
-			success : function(data) {
-				window.location.href = "dock.xhtml?myid="+uname;
-			},
-
-			error : function(xhr, ajaxOptions, thrownError) {
-				//On error do this
-				if (xhr.status == 200) {
-					//window.location.href = "dock.xhtml?myid="+uname;
-					//alert(ajaxOptions);
-					//alert(thrownError);
-				} else {
-					//alert(xhr.status);
-			
-				}
-			}
-		});
-
-		
 		$.ajax({
 			url : "SessionServlet",
 			type : 'POST',
@@ -203,6 +178,30 @@ span.pass {
 					alert("Please enter the correct username!");
 				
 				} else {
+					
+					$.ajax({
+						url : "WebGameServlet",
+						type : 'POST',
+						contentType : 'text',
+						data : uname,
+
+						success : function(data) {
+							window.location.href = "dock.xhtml?myid="+uname;
+						},
+
+						error : function(xhr, ajaxOptions, thrownError) {
+							//On error do this
+							if (xhr.status == 200) {
+								//window.location.href = "dock.xhtml?myid="+uname;
+								//alert(ajaxOptions);
+								//alert(thrownError);
+							} else {
+								//alert(xhr.status);
+						
+							}
+						}
+					});
+
 					
 					var today = new Date();
 					var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();

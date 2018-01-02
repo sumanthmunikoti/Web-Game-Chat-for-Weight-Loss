@@ -2,11 +2,453 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Insert title here</title>
+<title>HomeScreen</title>
+
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<link
+	href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"
+	rel="stylesheet">
+<script
+	src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script type="text/javascript"
+	src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<link rel="stylesheet"
+	href="http://cdn.datatables.net/1.10.2/css/jquery.dataTables.min.css">
+<script type="text/javascript"
+	src="http://cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<!-- <script type="text/javascript" src="codeCollection.js"></script> -->
+
+<style>
+table.assetsTable {
+	font-family: arial, sans-serif;
+	border-collapse: collapse;
+	width: 50%;
+}
+
+tr:nth-child(even) {
+	background-color: #dddddd;
+}
+
+table.assetsTable td, th {
+	border: 1px solid #dddddd;
+	text-align: left;
+	padding: 8px;
+}
+
+table.logOutTable {
+	float: left;
+}
+
+input#chat {
+	width: 510px
+}
+
+#console-container {
+	width: 510px;
+}
+
+#console {
+	border: 1px solid #CCCCCC;
+	border-right-color: #999999;
+	border-bottom-color: #999999;
+	height: 800px;
+	overflow-y: scroll;
+	padding: 5px;
+	width: 100%;
+	float: right;
+}
+
+#console p {
+	padding: 0;
+	margin: 0;
+}
+
+.chatBoxPosition {
+	position: absolute;
+	top: 00;
+	right: 0;
+	height: 1000;
+}
+
+table.reportTable {
+	margin-right: 0px;
+	margin-left: auto;
+	width
+	=
+	50%;
+}
+</style>
+
 </head>
-<body>
+
+<body onload="fetchDynamicPrices()">
+
+	<table class="logOutTable">
+		<tr>
+			<td>
+				<!-- <button onClick="loadReadMe()" class="btn btn-primary">Read Me</button> -->
+				<button onClick="viewTransactions()" class="btn btn-primary">View
+					all transactions</button>
+				<button type="button" class="btn btn-primary"
+					onClick="killSession()">Log Out</button>
+			</td>
+		</tr>
+	</table>
+	<br>
+	<h3 id="welcome">Yo :</h3>
+	<b>Objective of the game:</b>
+	<ul>
+		<li>Buy/Sell your assets. The prices of the assets keep varying
+			similar to the stock market</li>
+		<li>Negotiate strongly with other players online to increase your
+			assets</li>
+	</ul>
+
+	<b>Approx bonus pay-out. Calculated using the assets. This might
+		not be the final bonus. Estimated bonus:<span id="payout"> </span>
+	</b>
+	<br>
+	<table class="assetsTable">
+		<caption>Your Assets</caption>
+		<tbody>
+			<tr>
+				<th></th>
+				<th>Clean Money</th>
+				<th>Dirty Money</th>
+				<th>Precious Metals</th>
+				<th>Property</th>
+				<!-- <th>ArtWorks</th> -->
+			</tr>
+
+			<tr>
+				<th>Your Assets</th>
+				<td><p id="cm"></p></td>
+				<td><p id="dm"></p></td>
+				<td id="pm"></td>
+				<td id="ppty"></td>
+				<!-- <td id="ar"></td> -->
+			</tr>
+
+			<tr>
+				<th>Current Market Price (CMP)</th>
+				<td><p></p></td>
+				<td><p></p></td>
+				<td id="cmppm"></td>
+				<td id="cmpppty"></td>
+				<!-- <td id="cmpar"></td> -->
+			</tr>
+
+			<tr>
+				<th rowspan="4">Last 3 price changes</th>
+				<td><p></p></td>
+				<td><p></p></td>
+				<td id="1ppm"></td>
+				<td id="1pppty"></td>
+				<!-- <td id="1par"></td> -->
+			</tr>
+
+			<tr>
+				<td><p></p></td>
+				<td><p></p></td>
+				<td id="2ppm"></td>
+				<td id="2pppty"></td>
+				<!-- <td id="2par"></td> -->
+			</tr>
+
+			<tr>
+				<td><p></p></td>
+				<td><p></p></td>
+				<td id="3ppm"></td>
+				<td id="3pppty"></td>
+				<!-- <td id="3par"></td> -->
+			</tr>
+		</tbody>
+	</table>
+	<br>
+	<br>
+
+	<div class="noscript">
+		<h2 style="color: #ff0000">Seems your browser doesn't support
+			Javascript! Websockets rely on Javascript being enabled. Please
+			enable Javascript and reload this page!</h2>
+	</div>
+
+
+	<div class="chatBoxPosition">
+		<p>
+			<input type="text"
+				placeholder="Say hi to see if others are online. We request you to be patient "
+				id="chat" />
+		</p>
+		<div id="console-container">
+			<div id="console"></div>
+		</div>
+	</div>
+
+	<h4>Complete the deal here</h4>
+	<p>
+		Send <input type="number" name="valuableQty" value="1" min="1">
+		units of <select id="valuableName">
+			<option value="clean_money">Clean Money</option>
+			<option value="dirty_money">Dirty Money</option>
+			<option value="preciousMetals">Precious Metals</option>
+			<option value="property">Property</option>
+			<!-- <option value="artWorks">Art Works</option> -->
+		</select> to <select id="usersList"></select>
+
+		<button onClick="transactionDetails()">Make Transfer</button>
+
+		<br> <br>
+	<h4>
+		<b> How to Play</b>
+	</h4>
+
+	<br>
+	<br>
 
 
 
 </body>
+
+<script>
+	window.onload = function() {
+		var myid = '';
+		var pmyid = '';
+		var query = window.location.search.substring(1);
+		//query = myid=sum&pmyid=ram; 
+		query.split('&');
+		var vars = query.split("&");
+		//vars is an array like this ['myid=sum','pmyid=ram']
+
+		for (var i = 0; i < vars.length; i++) {
+			var pair = vars[i].split('=');
+			if (pair[0] == 'myid') {
+				myid = pair[1];
+			} else if (pair[0] == 'pmyid') {
+				pmyid = pair[1];
+			}
+		}
+	}
+
+
+	chatCode();
+	var sessionUser = '';
+
+	$.ajax({
+		url : "SessionServlet2",
+		type : 'POST',
+		dataType : 'text',
+		success : function(response) {
+			var type = typeof (response);
+			document.getElementById("welcome").innerHTML = "Welcome, "
+					+ response;
+			sessionUser = response.trim();
+		},
+		error : function(xhr, ajaxOptions, thrownError) {
+			if (xhr.status == 200) {
+				console.log("error");
+				console.log(xhr);
+			}
+		}
+	});
+
+	//----------The below is from chat.html----------------------------------------
+
+	function chatCode() {
+
+		var Chat = {};
+		var message;
+
+		Chat.socket = null;
+
+		Chat.connect = (function(host) {
+			if ('WebSocket' in window) {
+				Chat.socket = new WebSocket(host);
+			} else if ('MozWebSocket' in window) {
+				Chat.socket = new MozWebSocket(host);
+			} else {
+				Console
+						.log('Error: WebSocket is not supported by this browser.');
+				return;
+			}
+
+			Chat.socket.onopen = function() {
+				//Console.log('Info: WebSocket connection opened.');
+				document.getElementById('chat').onkeydown = function(event) {
+					if (event.keyCode == 13) {
+						Chat.sendMessage();
+					}
+				};
+			};
+
+			Chat.socket.onclose = function() {
+				document.getElementById('chat').onkeydown = null;
+				//Console.log('Info: WebSocket closed.');
+			};
+
+			Chat.socket.onmessage = function(message) {
+
+				Console.log(message.data);
+
+				//------------userlogdetails------
+
+				var today = new Date();
+				var date = today.getFullYear() + '-' + (today.getMonth() + 1)
+						+ '-' + today.getDate();
+				var time = today.getHours() + ":" + today.getMinutes() + ":"
+						+ today.getSeconds();
+				var dateTime = date + ' ' + time;
+				console.log(dateTime);
+
+				var eventName = "Chat";
+				var value = message.data;
+
+				var userLog = "{'clientTimeStamp':'" + dateTime
+						+ "','eventName':'" + eventName + "','value':'" + value
+						+ "'}";
+
+				$.ajax({
+					url : "UserLogServlet",
+					type : 'POST',
+					contentType : 'application/json',
+					data : userLog,
+
+					success : function(data) {
+					},
+
+					error : function(xhr, ajaxOptions, thrownError) {
+						if (xhr.status == 200) {
+							console.log("Failed");
+						}
+					}
+				});
+				//------userlogdetails------------
+			};
+		});
+
+		Chat.initialize = function() {
+			if (window.location.protocol == 'http:') {
+				var querys = window.location.search.substring(1);
+				Chat.connect('ws://' + window.location.host + '/wld/aml/chat?'
+						+ querys);
+			} else {
+				var querys = window.location.search.substring(1);
+				Chat.connect('wss://' + window.location.host + '/wld/aml/chat?'
+						+ querys);
+			}
+		};
+
+		Chat.sendMessage = (function() {
+			message = document.getElementById('chat').value;
+			if (message != '') {
+				document.getElementById('chat').value = '';
+				var date = new Date();
+				var strdate = date.getTime();
+				console.log(strdate);
+
+				var str = "{'time':'" + strdate + "','message':'" + message
+						+ "','sessionId':'" + sessionUser + "'}";
+				console.log("str: " + str);
+				//			Chat.socket.send(str);
+
+				var testKey = [ "type", "chat" ];
+				var testVal = [ "chat", str ];
+				Chat.sendMessageKVs(testKey, testVal);
+			}
+		});
+
+		Chat.sendMessageKVs = function(keys, vals) {
+			var query = window.location.search.substring(1);
+			console.log("query: " + query);
+			// 		var query = myid=sum&pmyid=ram;
+			var vars = query.split("&");
+			//vars = ['myid=sum','pmyid=ram']
+			var tosend = '{';
+			for (var j = 0; j < keys.length; j++) {
+				tosend = tosend + '"' + keys[j] + '" : "' + vals[j] + '",';
+			}
+			for (var i = 0; i < vars.length; i++) {
+				var pair = vars[i].split("=");
+				tosend = tosend + '"' + pair[0] + '" : "' + pair[1] + '",';
+			}
+			var d = new Date();
+			tosend = tosend + '"time" : "' + d.getTime() + '"}';
+
+			console.log("tosend: " + tosend);
+			Chat.socket.send(tosend);//tosend is the text that the server is urgently awaiting!!
+			// Console.log('Sent: sendMessage ' + tosend);
+		};
+
+		var Console = {};
+
+		Console.log = (function(message) {
+			var console = document.getElementById('console');
+			var p = document.createElement('p');
+			p.style.wordWrap = 'break-word';
+			p.innerHTML = message;
+			console.appendChild(p);
+			while (console.childNodes.length > 25) {
+				console.removeChild(console.firstChild);
+			}
+			console.scrollTop = console.scrollHeight;
+		});
+
+		Chat.initialize();
+
+		document.addEventListener("DOMContentLoaded", function() {
+			// Remove elements with "noscript" class - <noscript> is not allowed in XHTML
+			var noscripts = document.getElementsByClassName("noscript");
+			for (var i = 0; i < noscripts.length; i++) {
+				noscripts[i].parentNode.removeChild(noscripts[i]);
+			}
+		}, false);
+	}
+
+	//----------------------------------------The above is from chat.html-----------
+
+	function killSession() {
+
+		if (confirm("Are you sure you want to Log out?!")) {
+
+			$.ajax({
+				url : "LogOut",
+				type : 'POST',
+				contentType : 'text',
+				data : 'yo',
+				dataType : 'text',
+				success : function(response) {
+
+					var type = typeof (response);
+					console.log(type);
+					console.log("response: " + response);
+
+				},
+
+				error : function(xhr, ajaxOptions, thrownError) {
+					//On error do this
+					if (xhr.status == 200) {
+						console.log("error");
+						console.log(xhr);
+						//alert(ajaxOptions);
+					} else {
+						//alert(xhr.status);
+						//alert(thrownError);
+					}
+				}
+			});// end of  AJAX!!!!!!
+
+			window.location.href = "LoginForm.html";
+		}
+	}
+</script>
 </html>
