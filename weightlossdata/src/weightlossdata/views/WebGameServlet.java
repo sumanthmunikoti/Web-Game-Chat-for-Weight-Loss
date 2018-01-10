@@ -18,7 +18,7 @@ import org.apache.commons.io.IOUtils;
 import weightlossdata.data.User;
 
 /**
- * Servlet implementation class WebGameServelet
+ * Servlet implementation class WebGameServlet
  */
 @WebServlet(name="WebGameServlet", loadOnStartup=1, description = "This servlet loads the UI for the game. It takes care of the interface.", urlPatterns = { "/WebGameServlet" })
 public class WebGameServlet extends HttpServlet {

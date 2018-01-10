@@ -15,7 +15,7 @@ public class Jconnector {
 	public static int checkUsernameAvailability(String uname) {
 		//		System.out.println("In checkUsernameAvailability method now");
 
-		String url = "jdbc:mysql://localhost:3306/aml";
+		String url = "jdbc:mysql://localhost:3306/wld";
 		String user = "hsr";
 		String password = "root";
 
@@ -51,7 +51,7 @@ public class Jconnector {
 
 	public static String checkSimpleUserId(String useridNoPassword) {
 
-		String url = "jdbc:mysql://localhost:3306/aml";
+		String url = "jdbc:mysql://localhost:3306/wld";
 		String user = "hsr";
 		String password = "root";
 
@@ -65,7 +65,7 @@ public class Jconnector {
 			String userid = jo.getString("uname").trim();
 
 			String sql = "SELECT COUNT(*) FROM wld.useraccount WHERE userid IN ('" + userid + "')";
-			//SELECT COUNT(*) FROM aml.useraccount WHERE userid IN ('" + userid + "');
+			//SELECT COUNT(*) FROM wld.useraccount WHERE userid IN ('" + userid + "');
 
 			ResultSet rs = stSetLimit.executeQuery(sql);
 			while (rs.next()) {
@@ -89,9 +89,9 @@ public class Jconnector {
 	//-------------------------------------------------------------------------------------------------------
 
 	//-------------------------code to insert comOwnDetails-----------------------------
-	public static String logUserDetails(String username,String clientTimeStamp, String serverTimeStamp, String eventName ,String value) {
+	public static String logUserDetails(String username,String clientTimeStamp, String serverTimeStamp, String eventName ,String value, String role) {
 
-		String url = "jdbc:mysql://localhost:3306/aml";
+		String url = "jdbc:mysql://localhost:3306/wld";
 		String user = "hsr";
 		String password = "root";
 
@@ -99,7 +99,7 @@ public class Jconnector {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection conn = DriverManager.getConnection(url, user, password);
 
-			String sql = "INSERT INTO wld.userlogdetails (`username`,`clientTimeStamp`,`serverTimeStamp`,`eventName`,`value`) VALUES(?,?,?,?,?);";
+			String sql = "INSERT INTO wld.userlogdetails (`username`,`clientTimeStamp`,`serverTimeStamp`,`eventName`,`value`,`role`) VALUES(?,?,?,?,?,?);";
 
 			//				System.out.println("username: "+username);
 			//				System.out.println("clientTimeStamp: "+clientTimeStamp);
@@ -113,6 +113,7 @@ public class Jconnector {
 			statement.setString(3, serverTimeStamp);
 			statement.setString(4, eventName);
 			statement.setString(5, value);
+			statement.setString(6, role);
 
 			int row = statement.executeUpdate();
 
@@ -135,7 +136,7 @@ public class Jconnector {
 	
 		public static void insertSimpleUserInformation(String userid) {
 			
-			String url = "jdbc:mysql://localhost:3306/aml";
+			String url = "jdbc:mysql://localhost:3306/wld";
 			String user = "hsr";
 			String password = "root";
 

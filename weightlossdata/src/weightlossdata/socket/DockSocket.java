@@ -41,8 +41,8 @@ public class DockSocket extends HttpServlet{
 				} else {
 					DockSocket partner = waitList.pollFirst();
 					String pmyid = partner.myid;
-					partner.me.getBasicRemote().sendText("HomeScreen.html?myid="+pmyid+"&pmyid="+myid);
-					this.me.getBasicRemote().sendText("HomeScreen.html?myid="+myid+"&pmyid="+pmyid);
+					partner.me.getBasicRemote().sendText("helper.html?myid="+pmyid+"&pmyid="+myid);
+					this.me.getBasicRemote().sendText("seeker.html?myid="+myid+"&pmyid="+pmyid);
 				}
 			} catch (Exception e) {
 				e.printStackTrace();

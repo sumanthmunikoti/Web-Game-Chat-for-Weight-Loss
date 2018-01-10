@@ -2,6 +2,8 @@ package weightlossdata.socket;
 
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
@@ -15,6 +17,8 @@ import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 
 import org.json.JSONObject;
+
+import weightlossdata.businesslogic.Jconnector;
 
 //import weightlossdata.businesslogic.Jconnector;
 
@@ -58,20 +62,25 @@ public class ChatAnnotationForPair  {
 	    public void incoming(String message) {
 //	    	System.out.println("The message you're looking for: "+message);
 	    	
+	    	
 	        // Never trust the client
 	    try {
 	    	JSONObject jo = new JSONObject(message);
+	    	
+	    	Date date=new Date(System.currentTimeMillis());
+	    	Long clientTime = Long.parseLong(jo.getString("time"));
+	    	Date clientDate = new Date(clientTime);
+	    	
 	    	String realMessage = jo.getString("chat");
-	    	System.out.println("chat part of the JSON: "+realMessage);
+	    	String role = jo.getString("role");
 	    	
 	    	JSONObject joMessage = new JSONObject(realMessage);
 	    	String stringMessage = joMessage.getString("message");
-	    	System.out.println("The message part of message: "+stringMessage);
 	    	
 	    	String sessionId = joMessage.getString("sessionId").trim();
-	    	System.out.println("sessionId: "+sessionId);
-	    	
-	        String filteredMessage = ""+sessionId+": "+ stringMessage;
+	    	String filteredMessage = ""+sessionId+": "+ stringMessage;
+	    	Jconnector.logUserDetails(jo.getString("myid"), ""+clientDate, ""+date, "chat", filteredMessage, role);
+	        
 	        broadcastToPairs(filteredMessage, session);
        		
 	    }
