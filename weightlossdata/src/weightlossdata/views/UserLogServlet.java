@@ -40,7 +40,7 @@ public class UserLogServlet extends HttpServlet {
 			JSONObject jo = new JSONObject(theString);
 			HttpSession session = request.getSession();
 			String username = (String) session.getAttribute("uname");
-			Jconnector.logUserDetails(username,jo.getString("clientTimeStamp"),dateTime, jo.getString("eventName"),jo.getString("value"));
+			Jconnector.logUserDetails(username,jo.getString("clientTimeStamp"),dateTime, jo.getString("eventName"),jo.getString("value"), jo.getString("role"),"");
 			//implement session here
 			
 		} catch (JSONException e) {

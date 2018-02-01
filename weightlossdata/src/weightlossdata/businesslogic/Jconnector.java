@@ -89,7 +89,7 @@ public class Jconnector {
 	//-------------------------------------------------------------------------------------------------------
 
 	//-------------------------code to insert comOwnDetails-----------------------------
-	public static String logUserDetails(String username,String clientTimeStamp, String serverTimeStamp, String eventName ,String value, String role) {
+	public static String logUserDetails(String username,String clientTimeStamp, String serverTimeStamp, String eventName ,String value, String role, String partnerId) {
 
 		String url = "jdbc:mysql://localhost:3306/wld";
 		String user = "hsr";
@@ -99,7 +99,7 @@ public class Jconnector {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection conn = DriverManager.getConnection(url, user, password);
 
-			String sql = "INSERT INTO wld.userlogdetails (`username`,`clientTimeStamp`,`serverTimeStamp`,`eventName`,`value`,`role`) VALUES(?,?,?,?,?,?);";
+			String sql = "INSERT INTO wld.userlogdetails (`username`,`clientTimeStamp`,`serverTimeStamp`,`eventName`,`value`,`role`,`partnerId`) VALUES(?,?,?,?,?,?,?);";
 
 			//				System.out.println("username: "+username);
 			//				System.out.println("clientTimeStamp: "+clientTimeStamp);
@@ -114,6 +114,7 @@ public class Jconnector {
 			statement.setString(4, eventName);
 			statement.setString(5, value);
 			statement.setString(6, role);
+			statement.setString(7, partnerId);
 
 			int row = statement.executeUpdate();
 

@@ -115,8 +115,13 @@ li.inst {
 		</tr>
 	</table>
 	<br>
+	
+	
 	<div id="matter">
 	<h3 id="welcome"></h3>
+	<div id="timer">
+	<b>Time:</b><label id="minutes">00</label>:<label id="seconds">00</label>
+	</div>
 	<b>Objective of the game:</b>
 	<ul>
 		<li class="inst">You are the seeker</li>
@@ -155,7 +160,32 @@ li.inst {
 </body>
 
 <script>
+
+var minutesLabel = document.getElementById("minutes");
+var secondsLabel = document.getElementById("seconds");
+var totalSeconds = 0;
+setInterval(setTime, 1000);
+
+function setTime() {
+  ++totalSeconds;
+  secondsLabel.innerHTML = pad(totalSeconds % 60);
+  minutesLabel.innerHTML = pad(parseInt(totalSeconds / 60));
+}
+
+function pad(val) {
+  var valString = val + "";
+  if (valString.length < 2) {
+    return "0" + valString;
+  } else {
+    return valString;
+  }
+}
+
+//-------------timer code above---------
 	window.onload = function() {
+	
+		var ding = new Audio('ding.mp3');
+		
 		var myid = '';
 		var pmyid = '';
 		var query = window.location.search.substring(1);
@@ -172,6 +202,7 @@ li.inst {
 				pmyid = pair[1];
 			}
 		}
+		ding.play();
 	}
 
 
@@ -231,42 +262,12 @@ li.inst {
 			};
 
 			Chat.socket.onmessage = function(message) {
+				
+				var tick =  new Audio("tick.mp3");
+				tick.play();
 
 				Console.log(message.data);
 
-				//------------userlogdetails------
-/* 
-				var today = new Date();
-				var date = today.getFullYear() + '-' + (today.getMonth() + 1)
-						+ '-' + today.getDate();
-				var time = today.getHours() + ":" + today.getMinutes() + ":"
-						+ today.getSeconds();
-				var dateTime = date + ' ' + time;
-				console.log(dateTime);
-
-				var eventName = "Chat";
-				var value = message.data;
-
-				var userLog = "{'clientTimeStamp':'" + dateTime
-						+ "','eventName':'" + eventName + "','value':'" + value
-						+ "'}";
-
-				$.ajax({
-					url : "UserLogServlet",
-					type : 'POST',
-					contentType : 'application/json',
-					data : userLog,
-
-					success : function(data) {
-					},
-
-					error : function(xhr, ajaxOptions, thrownError) {
-						if (xhr.status == 200) {
-							console.log("Failed");
-						}
-					}
-				});
- */				//------userlogdetails------------
 			};
 		});
 
@@ -285,12 +286,21 @@ li.inst {
 		Chat.sendMessage = (function() {
 			message = document.getElementById('chat').value;
 			if (message != '') {
+				
+				var txt = message.replace(/["']/g, "");
+				console.log("txt: "+txt);
+				
+				/* 
+			    var txt = message.replace("'","");
+			    console.log("txt: "+txt);
+				 */
+				 
 				document.getElementById('chat').value = '';
 				var date = new Date();
 				var strdate = date.getTime();
 				console.log(strdate);
 
-				var str = "{'time':'" + strdate + "','message':'" + message
+				var str = "{'time':'" + strdate + "','message':'" + txt
 						+ "','sessionId':'" + sessionUser + "'}";
 				console.log("str: " + str);
 				//			Chat.socket.send(str);

@@ -56,7 +56,6 @@ span.pass {
 	padding-top: 16px;
 }
 
-/* Change styles for span and cancel button on extra small screens */
 @media screen and (max-width: 300px) {
 	span.pass {
 		display: block;
@@ -73,7 +72,7 @@ span.pass {
 	<h1>Login Form</h1>
 	
 	<div class="container">
-		<label><b>Username</b></label> 
+		<label><b>MTURK ID</b></label> 
 		<input type="text" onkeypress="return searchKeyPress(event)" placeholder="Enter Username" value="" id="uname" name="uname" required> 
 		
 		<input type="button" class="btn btn-info btn-lg" id="btnSearch" Value="Login" onclick="loadOptionsPage()"/>
@@ -143,19 +142,19 @@ span.pass {
 			success : function(response) {
 				if (response == 0) {
 						
-						var today = new Date();
+						/* var today = new Date();
 						var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
 						var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
 						var dateTime = date+' '+time;
 						console.log(dateTime);
 						
 						var eventName = "Failed Login";
-						var value = "";
+						var value = ""; */
 						
-						var userLog = "{'clientTimeStamp':'"+dateTime+"','eventName':'"+eventName+"','value':'"+value+"'}";
+			//			var userLog = "{'clientTimeStamp':'"+dateTime+"','eventName':'"+eventName+"','value':'"+value+"','role':'NA'}";                
 						
 
-			$.ajax({
+			/* $.ajax({
 						url : "UserLogServlet",
 						type : 'POST',
 						contentType : 'application/json',
@@ -174,7 +173,7 @@ span.pass {
 							} 
 						}
 					});
-
+ */
 					alert("Please enter the correct username!");
 				
 				} else {
@@ -203,7 +202,7 @@ span.pass {
 					});
 
 					
-					var today = new Date();
+					/* var today = new Date();
 					var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
 					var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
 					var dateTime = date+' '+time;
@@ -212,7 +211,8 @@ span.pass {
 					var eventName = "Successful Login";
 					var value = "";
 					
-					var userLog = "{'clientTimeStamp':'"+dateTime+"','eventName':'"+eventName+"','value':'"+value+"'}";
+					
+					/* 
 					
 					$.ajax({
 						url : "UserLogServlet",
@@ -235,8 +235,9 @@ span.pass {
 					});
 					
 	//				window.location.href = "HomeScreen2.0.html";
+					*/
 				}
-
+					
 			},
 			error : function(xhr, ajaxOptions, thrownError) {
 				if (xhr.status == 200) {
@@ -244,7 +245,7 @@ span.pass {
 				}
 			}
 		});
-
+ 
 	}
 </script>
 

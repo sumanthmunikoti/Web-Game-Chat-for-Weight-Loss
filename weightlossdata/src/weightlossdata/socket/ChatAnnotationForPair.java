@@ -79,7 +79,7 @@ public class ChatAnnotationForPair  {
 	    	
 	    	String sessionId = joMessage.getString("sessionId").trim();
 	    	String filteredMessage = ""+sessionId+": "+ stringMessage;
-	    	Jconnector.logUserDetails(jo.getString("myid"), ""+clientDate, ""+date, "chat", filteredMessage, role);
+	    	Jconnector.logUserDetails(jo.getString("myid"), ""+clientDate, ""+date, "chat", filteredMessage, role,jo.getString("pmyid"));
 	        
 	        broadcastToPairs(filteredMessage, session);
        		
@@ -101,7 +101,7 @@ public class ChatAnnotationForPair  {
 	    	    
 	    //---------------------------------------Ramu's function-------------------------------------------------
 	    private static void broadcastToPairs(String msg, Session session) {
-	    	System.out.println("Inside broadcastToPairs function");
+//	    	System.out.println("Inside broadcastToPairs function");
 			for (ChatAnnotationForPair client : playerConnections) {
 				try {
 					synchronized (client) {

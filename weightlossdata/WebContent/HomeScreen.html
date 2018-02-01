@@ -222,6 +222,9 @@ table.reportTable {
 
 <script>
 	window.onload = function() {
+		
+		var ding = new Audio('ding.mp3');
+		
 		var myid = '';
 		var pmyid = '';
 		var query = window.location.search.substring(1);
@@ -238,6 +241,7 @@ table.reportTable {
 				pmyid = pair[1];
 			}
 		}
+		ding.play();
 	}
 
 
@@ -297,7 +301,10 @@ table.reportTable {
 			};
 
 			Chat.socket.onmessage = function(message) {
-
+				
+				var tick =  new Audio("tick.mp3");
+				tick.play();
+				
 				Console.log(message.data);
 
 				//------------userlogdetails------
